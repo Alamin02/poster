@@ -22,6 +22,10 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 return redirect('/')
+            else:
+                print("No userr... sad!")
+        else:
+            print("Invalid form bro...!", request.POST)
         return render(request, "login.html", {"form": form, "errors": "Invalid username/Password"})
 
     elif request.method == "GET":
