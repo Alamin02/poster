@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card border-light mb-3" style="max-width: 30rem; margin: auto; padding-top: 10rem;">
+        <div class="card-header bg-dark text-white text-center">Login Form</div>
+        <div class="card-body">
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <small class="text-danger">
+                    {{ errors }}
+                </small>
+                <div class="form-group">
+                    {{ form.username.errors }}
+                    <label for="email">Username:</label>
+                    {{ form.username }}
+                    <small id="emailHelp" class="form-text text-muted">Pick a unique username.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <small class="text-danger">
+                        {{ form.password.errors }}
+                    </small>
+                    <label for="password">Password:</label>
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="btn btn-dark">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

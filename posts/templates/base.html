@@ -31,25 +31,32 @@
                     <a class="nav-link mr-2 ml-2" href="#">About</a>
                 </li>
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                <a class="nav-link mr-2 ml-2" href="#">Posts</a>
-                </li>
-                <li class="nav-item">
-                <button type="button" class="btn btn-outline-light mr-2 ml-2">
-                    Log Out
-                </button>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link mr-2 ml-2" href="#">Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-outline-light mr-2 ml-2">
+                            Log Out
+                        </button>
+                    </li>
                 {% else %}
-                <li class="nav-item">
-                    <button type="button" class="btn btn-outline-light mr-2 ml-2 mt-lg-0 mb-lg-0 mt-sm-2 mb-sm-2" data-toggle="modal" data-target="#loginModal">
-                        Login
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button type="button" class="btn btn-outline-light mr-2 ml-2" data-toggle="modal" data-target="#signupModal">
-                        Signup
-                    </button>
-                </li>
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}">
+                            <button type="button"
+                                    class="btn btn-outline-light mr-2 ml-2 mt-lg-0 mb-lg-0 mt-sm-2 mb-sm-2"
+                                    data-toggle="modal" data-target="#loginModal">
+                                Login
+                            </button>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'signup' %}">
+                            <button type="button" id="signup-button" class="btn btn-outline-light mr-2 ml-2"
+                                    data-toggle="modal" data-target="#signupModal">
+                                Signup
+                            </button>
+                        </a>
+                    </li>
                 {% endif %}
             </ul>
         </div>
@@ -60,84 +67,45 @@
 {% endblock %}
 
 {% if not user.is_authenticated %}
-<!-- Modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-dark">
-                <h5 class="modal-title text-white" id="loginModalTitle">Login Form</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="text-white">&times;</span>
-                </button>
-            </div>
-            <form action="{% url 'login' %}" method="post">
-                {{ auth_form.non_field_errors }}
-            <div class="modal-body">
-                {% csrf_token %}
-                    <div class="form-group">
-                        {{ auth_form.username.errors }}
-                        <label for="email">Username: </label>
-                        {{ auth_form.username }}
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your username with anyone
-                            else.
-                        </small>
+    <!-- Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h5 class="modal-title text-white" id="loginModalTitle">Login Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="text-white">&times;</span>
+                    </button>
+                </div>
+                <form action="{% url 'login' %}" method="post">
+                    {{ auth_form.non_field_errors }}
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ auth_form.username.errors }}
+                            <label for="email">Username: </label>
+                            {{ auth_form.username }}
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your username with
+                                anyone
+                                else.
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            {{ auth_form.password.errors }}
+                            <label for="password">Password</label>
+                            {{ auth_form.password }}
+                        </div>
                     </div>
-                    <div class="form-group">
-                        {{ auth_form.password.errors }}
-                        <label for="password">Password</label>
-                        {{ auth_form.password }}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-            </form>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-dark">
-                <h5 class="modal-title text-white" id="signupModalTitle">Signup Form</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="text-white">&times;</span>
-                </button>
-            </div>
-            <form action="{% url 'signup' %}" method="post">
-            <div class="modal-body">
-                {% csrf_token %}
-                {{ signup_form.non_field_errors }}
-                    <div class="form-group">
-                        {{ signup_form.username.errors }}
-                        <label for="email">Username:</label>
-                        {{ signup_form.username }}
-                        <small id="emailHelp" class="form-text text-muted">Pick a unique username.
-                        </small>
-                    </div>
-                    <div class="form-group">
-                        {{ signup_form.password1.errors }}
-                        <label for="password">Password</label>
-                        {{ signup_form.password1 }}
-                    </div>
-                    <div class="form-group">
-                        {{ signup_form.password2.errors }}
-                        <label for="password">Confirm Password</label>
-                        {{ signup_form.password2 }}
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 {% endif %}
 

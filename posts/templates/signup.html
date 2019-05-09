@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card border-light mb-3" style="max-width: 30rem; margin: auto; padding-top: 10rem;">
+        <div class="card-header bg-dark text-white text-center">Signup Form</div>
+        <div class="card-body">
+            <form action="{% url 'signup' %}" method="post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="form-group">
+                    {{ form.username.errors }}
+                    <label for="email">Username:</label>
+                    {{ form.username }}
+                    <small id="emailHelp" class="form-text text-muted">Pick a unique username.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <small class="text-danger">
+                    {{ form.password1.errors }}
+                    </small>
+                    <label for="password">Password:</label>
+                    {{ form.password1 }}
+                </div>
+                <div class="form-group">
+                    <small class="text-danger">
+                    {{ form.password2.errors }}
+                    </small>
+                    <label for="password">Confirm Password:</label>
+                    {{ form.password2 }}
+                </div>
+                <button type="submit" class="btn btn-dark">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
