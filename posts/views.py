@@ -14,7 +14,7 @@ def home_view(request):
 
 def user_login(request):
     if request.method == "POST":
-        form = LoginForm(request.POST)
+        form = LoginForm(data=request.POST)
         if form.is_valid():
             username = request.POST['username']
             password = request.POST['password']
