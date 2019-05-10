@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import LoginForm, SignupForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from .models import Post
-from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -46,11 +45,17 @@ def user_create(request):
         return render(request, "signup.html", {"form": form})
 
 
-@csrf_exempt
-def post_view(request, username):
+def user_logout(request):
+    logout(request)
+    return redirect('/')
+
+
+def post_view(request):
     if request.method == "GET":
-        posts = Post.objects.all()
-        return render(request, 'posts.html', {"posts": posts})
-    elif request.method == "POST":
-        print(request.POST)
-        return redirect('/')
+        if request.user.is_authenticated:
+            print(request.user.id)
+            posts = Post.objects.filter(user=request.user.id)
+            print(posts)
+            return render(request, 'posts.html', {"posts": posts})
+        else:
+            return redirect('/login')

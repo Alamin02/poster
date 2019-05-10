@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>Contents...</p>
-     {% for post in posts %}
-         {{ post.data }}
-    {% endfor %}
+    <div class="container">
+        <h1 class="mt-2 mb-2">Posts</h1>
+        {% for post in posts %}
+            <p>{{ post.data }}</p>
+        {% endfor %}
+    </div>
 {% endblock %}
