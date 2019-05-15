@@ -7,4 +7,5 @@ urlpatterns = [
     path('signup/', views.user_create, name="signup"),
     path('logout/', views.user_logout, name="logout"),
     path('posts/', views.post_view, name="posts"),
+    path('post/<str:user>/', views.PostCreate.as_view(), name="posts"),
 ]

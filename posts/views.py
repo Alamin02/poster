@@ -1,7 +1,14 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.http import HttpResponse, HttpResponseForbidden, Http404
+from django.shortcuts import render, redirect, get_object_or_404
+from rest_framework.generics import CreateAPIView
+from rest_framework.renderers import BrowsableAPIRenderer, HTMLFormRenderer, JSONRenderer
+
+from posts.serializers import PostCreateSerializer
 from .forms import LoginForm, SignupForm
 from django.contrib.auth import authenticate, login, logout
 from .models import Post
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -59,3 +66,25 @@ def post_view(request):
             return render(request, 'posts.html', {"posts": posts})
         else:
             return redirect('/login')
+
+
+@csrf_exempt
+def post_for_user(request, user):
+    if request.method == "POST":
+        print(request.POST, user)
+        return HttpResponse("Success")
+
+
+class PostCreate(CreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostCreateSerializer
+    renderer_classes = [BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer]
+    lookup_url_kwarg = "user"
+
+    def perform_create(self, serializer):
+        username = self.kwargs.get(self.lookup_url_kwarg)
+        user = get_object_or_404(User, username=username)
+        if user is not None:
+            serializer.save(user=user)
+        else:
+            raise Http404
