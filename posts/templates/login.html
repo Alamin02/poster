@@ -6,9 +6,9 @@
         <div class="card-body">
             <form action="{% url 'login' %}" method="post">
                 {% csrf_token %}
-                {{ form.non_field_errors }}
+
                 <small class="text-danger">
-                    {{ errors }}
+                    {{ form.non_field_errors }}
                 </small>
                 <div class="form-group">
                     {{ form.username.errors }}
